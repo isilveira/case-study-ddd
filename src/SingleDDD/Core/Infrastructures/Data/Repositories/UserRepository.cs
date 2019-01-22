@@ -1,4 +1,5 @@
 ﻿using SingleDDD.Core.Domain.Entities;
+using SingleDDD.Core.Domain.Entities.Filters;
 using SingleDDD.Core.Domain.Interfaces.Infrastructures.Contexts;
 using SingleDDD.Core.Domain.Interfaces.Infrastructures.Repositories;
 using System;
@@ -61,6 +62,53 @@ namespace SingleDDD.Core.Infrastructures.Data.Repositories
             }
 
             return query.Any();
+        }
+
+        public List<User> GetByFilter(UserFilter userFilter)
+        {
+            var query = Context.Users.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(userFilter.Email))
+            {
+                query = query.Where(x => x.Email == userFilter.Email);
+            }
+
+            if (userFilter.RegistrationDate.HasValue)
+            {
+                query = query.Where(x => x.RegistrationDate == userFilter.RegistrationDate);
+            }
+
+            if (userFilter.RegistrationDateFrom.HasValue)
+            {
+                query = query.Where(x => x.RegistrationDate > userFilter.RegistrationDateFrom);
+            }
+
+            if (userFilter.RegistrationDateUntil.HasValue)
+            {
+                query = query.Where(x => userFilter.RegistrationDateUntil > x.RegistrationDate);
+            }
+
+            if (userFilter.Actives.HasValue)
+            {
+                query = query.Where(x => userFilter.Actives.Value ? !x.DeactivationDate.HasValue : x.DeactivationDate.HasValue);
+            }
+
+            if (userFilter.DeactivationDate.HasValue)
+            {
+                query = query.Where(x => x.DeactivationDate == userFilter.DeactivationDate);
+            }
+
+            if (userFilter.DeactivationDateFrom.HasValue)
+            {
+                query = query.Where(x => x.DeactivationDate > userFilter.DeactivationDateFrom);
+            }
+
+            if (userFilter.DeactivationDateUntil.HasValue)
+            {
+                query = query.Where(x => userFilter.DeactivationDateUntil > x.DeactivationDate);
+            }
+
+            return query.ToList();
         }
     }
 }

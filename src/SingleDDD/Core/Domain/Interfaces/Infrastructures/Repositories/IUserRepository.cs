@@ -1,4 +1,5 @@
 ﻿using SingleDDD.Core.Domain.Entities;
+using SingleDDD.Core.Domain.Entities.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,6 @@ namespace SingleDDD.Core.Domain.Interfaces.Infrastructures.Repositories
         int SaveContext();
         Task<int> SaveContextAsync();
         bool ExistUserWithEmail(string email, long? id = null);
+        List<User> GetByFilter(UserFilter userFilter);
     }
 }

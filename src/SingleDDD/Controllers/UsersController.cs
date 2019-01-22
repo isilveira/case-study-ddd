@@ -22,9 +22,9 @@ namespace SingleDDD.Controllers
         }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<User>> Get()
+        public ActionResult<IEnumerable<User>> Get([FromQuery]GetUserViewModel request)
         {
-            return UserApplicationService.GetAll();
+            return UserApplicationService.GetByFilter(request.Extract());
         }
 
         // GET api/values/5
@@ -79,7 +79,7 @@ namespace SingleDDD.Controllers
             }
         }
 
-        [HttpPost("{id}/deactivate")]
+        [HttpPost("{id}/[action]")]
         public ActionResult<User> Deactivate(long id)
         {
             try
@@ -93,7 +93,7 @@ namespace SingleDDD.Controllers
             }
         }
 
-        [HttpPost("{id}/activate")]
+        [HttpPost("{id}/[action]")]
         public ActionResult<User> Activate(long id)
         {
             try

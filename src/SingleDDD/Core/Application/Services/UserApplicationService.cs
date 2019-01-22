@@ -1,4 +1,6 @@
-﻿using SingleDDD.Core.Domain.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using SingleDDD.Core.Domain.Entities;
+using SingleDDD.Core.Domain.Entities.Filters;
 using SingleDDD.Core.Domain.Interfaces.Infrastructures.Repositories;
 using SingleDDD.Core.Domain.Interfaces.Services;
 using System;
@@ -29,6 +31,11 @@ namespace SingleDDD.Core.Application.Services
             UserRepository.SaveContext();
 
             return user;
+        }
+
+        internal List<User> GetByFilter(UserFilter userFilter)
+        {
+            return UserRepository.GetByFilter(userFilter);
         }
 
         public User Update(long id, string email, string password)
